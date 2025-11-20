@@ -79,6 +79,7 @@ def get_companies():
             company_list.append(company_data)
         return jsonify(company_list)
     except Exception as e :
+        print(f"🔥 SERVER ERROR: {str(e)}", flush=True)
         return jsonify({"error": f"Database error: {str(e)}"}), 500
 
 @app.route('/api/companies/<int:company_id>', methods=['GET'])
