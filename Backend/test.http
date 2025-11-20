@@ -1,0 +1,149 @@
+###  Company Model  ###
+
+### Create a new company
+POST http://127.0.0.1:5000/api/companies
+Content-Type: application/json
+
+{
+  "name": "fireFox",
+  "address": "Park avenue",
+  "website_url": "https://www.google.com/search?q=amazon&oq=amazon&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCTExMzI0ajBqOagCALACAQ&sourceid=chrome&ie=UTF-8"
+}
+
+###
+
+### Create another company (no address)
+POST http://127.0.0.1:5000/api/companies
+Content-Type: application/json
+
+{
+  "name": "Stark Industries"
+}
+
+###
+
+### (FAIL) Create a company with no name
+POST http://127.0.0.1:5000/api/companies
+Content-Type: application/json
+
+{
+  "address": "456 Blank Street"
+}
+
+# 2. get_companies
+### Get all companies
+
+GET http://127.0.0.1:5000/api/companies
+Accept: application/json
+
+# 3. Update_company
+
+### UPDATE a company (Change the ID!)
+PUT http://127.0.0.1:5000/api/companies/11
+Content-Type: application/json
+
+{
+  "name": "John"
+}
+
+# 4. Delete Company
+
+### DELETE a company (Change the ID!)
+DELETE http://127.0.0.1:5000/api/companies/1
+
+#                    ---------        2nd Module       ----------                 #
+
+###  Job_Application Model  ###
+
+# 1. Create Application
+
+POST http://127.0.0.1:5000/api/applications
+Content-Type: application/json
+
+{
+  "job_title": "Software Engineer",
+  "company_id": 2, 
+  "status": "Applied",
+  "notes": "Applied via their website. Spoke to Jane Doe.",
+  "job_url": "http://googleusercontent.com/jobs/swe-123"
+}
+
+###
+
+POST http://127.0.0.1:5000/api/applications
+Content-Type: application/json
+
+{
+  "job_title" : "Data Analystt",
+  "company_id" : 4
+}
+
+# 2. Get Applications
+
+### Get all applications for a specific company (CHANGE ID!)
+GET http://127.0.0.1:5000/api/companies//applications
+
+# 3. Get Application
+
+### Get ONE application (CHANGE ID!)
+GET http://127.0.0.1:5000/api/applications/1
+
+# 4. Update application
+
+### UPDATE an application (CHANGE ID!)
+PUT http://127.0.0.1:5000/api/applications/1
+Content-Type: application/json
+
+{
+  "status": "Interviewing",
+  "notes": "Just scheduled a phone screen for next Tuesday."
+}
+
+# 5. Delete application 
+
+### DELETE an application (CHANGE ID!)
+DELETE http://127.0.0.1:5000/api/applications/2
+
+#                    ---------        3rd Module       ----------                 #
+
+###  Resumes model  ### 
+
+# 1. Gets all resumes for an application
+
+GET http://127.0.0.1:5000/api/applications/1/resumes
+
+# 2. Delete the resumes 
+
+### Delete an resume for an application
+DELETE http://127.0.0.1:5000/api/resumes/8
+
+###  Contacts model  ###
+
+# 1. Create contact
+POST http://127.0.0.1:5000/api/contacts
+Content-Type: application/json
+
+{
+  "name": "Sam Altman",
+  "email": "sam.altman@acme.com",
+  "phone": "123-456-7890",
+  "company_id": 11
+}
+
+# 2. Get Contacts
+### Get all contacts for a specific company 
+GET http://127.0.0.1:5000/api/companies/13/contacts
+
+# 3. Update Contact
+### UPDATE a contact (CHANGE ID!)
+PUT http://127.0.0.1:5000/api/contacts/1
+Content-Type: application/json
+
+{
+  "email": "jane.doe.new@acme.com",
+  "phone": "999-999-9999"
+}
+
+# 4. Delete Contact
+### DELETE a contact (CHANGE ID!)
+DELETE http://127.0.0.1:5000/api/contacts/1

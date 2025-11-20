@@ -1,0 +1,15 @@
+# --- Python Junk (Ignore EVERYWHERE) ---
+# The **/ means "look in any folder"
+**/venv/
+**/__pycache__/
+*.pyc
+
+# --- Javascript Junk ---
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.vite/
+
+# --- Secrets (Ignore EVERYWHERE) ---
+# This blocks .env files in Root, Backend, or anywhere else
+**/.env
+**/files.env

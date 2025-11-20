@@ -1,0 +1,130 @@
+import { useState } from 'react'
+
+function AddApplicationModal({ isOpen, onClose, companyId, onApplicationAdded }) {
+  const [jobTitle, setJobTitle] = useState('')
+  const [status, setStatus] = useState('To Apply')
+  const [jobUrl, setJobUrl] = useState('')
+  const [notes, setNotes] = useState('')
+  const [date, setDate] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    const newApplication = {
+      company_id: companyId, // We need to tell Flask which company this is for!
+      job_title: jobTitle,
+      status: status,
+      job_url: jobUrl,
+      notes: notes,
+      application_date: date || null // Send null if empty
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newApplication),
+      })
+
+      if (response.ok) {
+        // Clear form
+        setJobTitle('')
+        setStatus('To Apply')
+        setJobUrl('')
+        setNotes('')
+        setDate('')
+        
+        onApplicationAdded() // Refresh the list!
+        onClose()
+      } else {
+        alert("Failed to add application")
+      }
+    } catch (error) {
+      console.error("Error:", error)
+      alert("Error adding application")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Track New Application</h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Job Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Job Title *</label>
+            <input 
+              type="text" required value={jobTitle} onChange={(e) => setJobTitle(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2"
+              placeholder="e.g. Senior Software Engineer"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Status</label>
+              <select 
+                value={status} onChange={(e) => setStatus(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2"
+              >
+                <option>To Apply</option>
+                <option>Applied</option>
+                <option>Interviewing</option>
+                <option>Offer</option>
+                <option>Rejected</option>
+              </select>
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Date Applied</label>
+              <input 
+                type="date" value={date} onChange={(e) => setDate(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2"
+              />
+            </div>
+          </div>
+
+          {/* URL */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Job Posting URL</label>
+            <input 
+              type="url" value={jobUrl} onChange={(e) => setJobUrl(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2"
+              placeholder="https://linkedin.com/jobs/..."
+            />
+          </div>
+
+          {/* Notes */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Notes</label>
+            <textarea 
+              value={notes} onChange={(e) => setNotes(e.target.value)}
+              rows="3"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2"
+              placeholder="Referral from..."
+            ></textarea>
+          </div>
+
+          {/* Actions */}
+          <div className="flex justify-end space-x-3 mt-6">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-300">
+              {isSubmitting ? 'Saving...' : 'Save Application'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default AddApplicationModal

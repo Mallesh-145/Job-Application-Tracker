@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+body {
+  /* Deep dark blue/slate base */
+  background-color: #0f172a; 
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #f8fafc; /* Default text color is now light */
+}
