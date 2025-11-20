@@ -6,3 +6,8 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: #f8fafc; /* Default text color is now light */
 }
+
+input , textarea , select{
+  color: #111827;
+  background-color: #f9fafb;
+}
